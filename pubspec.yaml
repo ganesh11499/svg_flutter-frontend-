@@ -31,7 +31,11 @@ dependencies:
   flutter:
     sdk: flutter
   
+  flutter_secure_storage: ^4.2.0
+  shared_preferences:  ^2.0.15
   fluttertoast: ^8.2.8
+  logger: ^1.1.0 
+
 
  
   # Add http package here

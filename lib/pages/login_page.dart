@@ -1,8 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -10,6 +11,8 @@ class LoginPage extends StatefulWidget {
   @override
   LoginPageState createState() => LoginPageState();
 }
+
+final logger = Logger();
 
 void showToast() {
   Fluttertoast.showToast(
@@ -22,10 +25,8 @@ void showToast() {
   );
 }
 
-
 Future<void> loginUser(context, String email, String password) async {
   const url = 'http://localhost:3000/user/login';
-
   try {
     final Map<String, dynamic> body = {
       'email': email,
@@ -40,9 +41,17 @@ Future<void> loginUser(context, String email, String password) async {
     );
 
     //final response data
-    final responceData = json.decode(response.body);
-
+    final responseData = json.decode(response.body);
+    logger.i("responseData", responseData);
     if (response.statusCode == 201) {
+      final token = responseData['token'];
+      final userName = responseData['userName'];
+
+      // Save token and username in SharedPreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', token); // Store the token
+      await prefs.setString('userName', userName); // Store the username
+
       Fluttertoast.showToast(
         msg: "User Login successful",
         toastLength: Toast.LENGTH_LONG,
@@ -51,18 +60,15 @@ Future<void> loginUser(context, String email, String password) async {
         textColor: Colors.black,
         fontSize: 16.0,
       );
-      
+
       // Navigate to the home screen
-    
-        Navigator.pushNamed(context, '/home');
-     
-      // Ensure to stop execution if login is successful
+      Navigator.pushNamed(context, '/home');
       return;
     } else {
       // Failed login case
       Fluttertoast.showToast(
-        msg: responceData['message'] ?? "Failed To Login",
-        toastLength: Toast.LENGTH_SHORT,
+        msg: responseData['message'] ?? "Failed To Login",
+        toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.TOP,
         backgroundColor: Colors.white,
         textColor: Colors.black,
@@ -73,15 +79,14 @@ Future<void> loginUser(context, String email, String password) async {
     // Catch and handle any network or other errors
     Fluttertoast.showToast(
       msg: "Failed To Login",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.TOP,
       backgroundColor: Colors.white,
       textColor: Colors.black,
       fontSize: 16.0,
     );
   }
 }
-
 
 class LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
@@ -170,7 +175,7 @@ class LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 24),
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState?.validate() ?? false) {
                           // ScaffoldMessenger.of(context).showSnackBar(
                           //   const SnackBar(
