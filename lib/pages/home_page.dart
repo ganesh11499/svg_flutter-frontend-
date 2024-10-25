@@ -18,6 +18,9 @@ class HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey =
       GlobalKey<ScaffoldState>(); // Scaffold key
 
+  //Logout and touch effect For Menu Options
+  int? _touchedIndex; // Track the touched item index 
+
   @override
   void initState() {
     super.initState();
@@ -33,7 +36,15 @@ class HomePageState extends State<HomePage> {
     logger.i("Saved userName: $userName, token: $token");
   }
 
+  //Logout funtion clearing local storage data
+  void logout() {
+    //Clear the local storage data
+    html.window.localStorage.clear();
+    Navigator.pushNamed(context, '/');
+  }
 
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +63,6 @@ class HomePageState extends State<HomePage> {
           },
         ),
       ),
-
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -68,35 +78,32 @@ class HomePageState extends State<HomePage> {
             ),
 
             //menu options
-            //profile option
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('Profile'),
+            // Profile option with hover effect for laptop and tap effect for mobile
+           _buildMenuOption(
+              index: 0,
+              icon: Icons.person,
+              title: 'Profile',
               onTap: () {
-                logger.i("naviaget to profile");
+                logger.i("Navigate to profile");
                 Navigator.pushNamed(context, '/register');
               },
             ),
 
-            //settings option
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
+            //Setting option with hover effect and touch effect
+            _buildMenuOption(index: 1,
+             icon: Icons.settings, 
+             title: "Settings", 
               onTap: () {
-                logger.i('naviagte to settings page');
                 Navigator.pushNamed(context, '/register');
               },
             ),
-
-            //logout option
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('Logout'),
-              onTap: () {
-                logger.i('naviagte to login page and clear token');
-                Navigator.pushNamed(context, '/register');
-              },
-            )
+          
+          //Logout option with hover effct and touch effect
+          _buildMenuOption(index: 2,
+           icon: Icons.logout, 
+           title: "Logout",
+            onTap: logout
+            ),
           ],
         ),
       ),
@@ -106,4 +113,44 @@ class HomePageState extends State<HomePage> {
               : const Text("Welcome To Homepage")),
     );
   }
+
+  // Method to build menu options with hover and touch effects
+  Widget _buildMenuOption({
+    required int index,
+    required IconData icon,
+    required String title,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _touchedIndex = index; // Set the touched index
+        });
+        onTap();
+      },
+      child: MouseRegion(
+        onEnter: (event) {
+          setState(() {
+            _touchedIndex = index; // Set the touched index when hovered
+          });
+        },
+        onExit: (event) {
+          setState(() {
+            _touchedIndex = null; // Reset the touched index when hover exits
+          });
+        },
+        child: Container(
+          color: _touchedIndex == index ?  Colors.blue : null, 
+          child: ListTile(
+            leading: Icon(icon),
+            title: Text(title),
+          ),
+        ),
+      ),
+    );
+  }
 }
+
+
+
+

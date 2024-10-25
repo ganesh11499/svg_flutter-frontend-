@@ -1,0 +1,21 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "dart",
+			"command": "dart",
+			"cwd": "",
+			"args": [
+				"--web-port",
+				"8080"
+			],
+			"problemMatcher": [],
+			"label": "dart: dart doc .",
+			"detail": "",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}
