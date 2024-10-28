@@ -64,10 +64,15 @@ class HomePageState extends State<HomePage> {
         ),
       ),
       drawer: Drawer(
+      
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            const DrawerHeader(
+            InkWell(
+              onTap : () {
+                Navigator.pushNamed(context, '/shopRegisterForm');
+              },
+            child: const DrawerHeader(
               decoration: BoxDecoration(color: Colors.blue),
               child: Text(
                 'SVG',
@@ -75,6 +80,7 @@ class HomePageState extends State<HomePage> {
                   fontSize: 24,
                 ),
               ),
+            ),
             ),
 
             //menu options

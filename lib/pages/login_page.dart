@@ -28,6 +28,8 @@ void showToast() {
   );
 }
 
+
+//User login api function
 Future<void> loginUser(context, String email, String password) async {
   const url = 'http://localhost:3000/user/login';
   try {
@@ -49,11 +51,15 @@ Future<void> loginUser(context, String email, String password) async {
     if (response.statusCode == 201) {
       final token = responseData['token'];
       final userName = responseData['userName'];
+      final userId = responseData['id'];
+      final shopId = responseData['shopId'];
 
       // Save token and username in SharedPreferences
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('token', token); // Store the token
       await prefs.setString('userName', userName); // Store the username
+      await prefs.setInt('userId', userId);  //Store the userId
+      await prefs.setInt('shopId', shopId); //Store shop Id
 
       Fluttertoast.showToast(
         msg: "User Login successful",
