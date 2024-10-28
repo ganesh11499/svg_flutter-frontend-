@@ -19,7 +19,7 @@ class HomePageState extends State<HomePage> {
       GlobalKey<ScaffoldState>(); // Scaffold key
 
   //Logout and touch effect For Menu Options
-  int? _touchedIndex; // Track the touched item index 
+  int? _touchedIndex; // Track the touched item index
 
   @override
   void initState() {
@@ -43,80 +43,184 @@ class HomePageState extends State<HomePage> {
     Navigator.pushNamed(context, '/');
   }
 
-
-  
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        // title: const Text('Home Page'),
-
-        //Hamburger Icon on the left side
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-            _scaffoldKey.currentState!
-                .openDrawer(); //open the drawer when clicked
-            //open the drawer when clicked
-          },
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          //Tabs buttons
+          bottom: const TabBar(
+            tabs: [
+              Tab(text: "Floor -1"),
+              Tab(text: "Floor -2"),
+            ],
+          ),
+          //Hamburger Icon on the left side
+          leading: IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              _scaffoldKey.currentState!
+                  .openDrawer(); //open the drawer when clicked
+              //open the drawer when clicked
+            },
+          ),
         ),
-      ),
-      drawer: Drawer(
-      
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            InkWell(
-              onTap : () {
-                Navigator.pushNamed(context, '/shopRegisterForm');
-              },
-            child: const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Text(
-                'SVG',
-                style: TextStyle(
-                  fontSize: 24,
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, '/shopRegisterForm');
+                },
+                child: const DrawerHeader(
+                  decoration: BoxDecoration(color: Colors.blue),
+                  child: Text(
+                    'SVG',
+                    style: TextStyle(
+                      fontSize: 24,
+                    ),
+                  ),
+                ),
+              ),
+
+              //menu options
+              // Profile option with hover effect for laptop and tap effect for mobile
+              _buildMenuOption(
+                index: 0,
+                icon: Icons.person,
+                title: 'Profile',
+                onTap: () {
+                  logger.i("Navigate to profile");
+                  Navigator.pushNamed(context, '/register');
+                },
+              ),
+
+              //Setting option with hover effect and touch effect
+              _buildMenuOption(
+                index: 1,
+                icon: Icons.settings,
+                title: "Settings",
+                onTap: () {
+                  Navigator.pushNamed(context, '/register');
+                },
+              ),
+
+              //Logout option with hover effct and touch effect
+              _buildMenuOption(
+                  index: 2, icon: Icons.logout, title: "Logout", onTap: logout),
+            ],
+          ),
+        ),
+
+        body: TabBarView(
+          children: [
+            Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(8, (index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Card(
+                            child: SizedBox(
+                              width: 170,
+                              height: 120,
+                              child:
+                                  Center(child: Text("Card ${index * 2 + 1}")),
+                            ),
+                          ),
+                          const SizedBox(width: 25), // Space between the cards
+                          Card(
+                            child: SizedBox(
+                              width: 170,
+                              height: 120,
+                              child:
+                                  Center(child: Text("Card ${index * 2 + 2}")),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
                 ),
               ),
             ),
-            ),
-
-            //menu options
-            // Profile option with hover effect for laptop and tap effect for mobile
-           _buildMenuOption(
-              index: 0,
-              icon: Icons.person,
-              title: 'Profile',
-              onTap: () {
-                logger.i("Navigate to profile");
-                Navigator.pushNamed(context, '/register');
-              },
-            ),
-
-            //Setting option with hover effect and touch effect
-            _buildMenuOption(index: 1,
-             icon: Icons.settings, 
-             title: "Settings", 
-              onTap: () {
-                Navigator.pushNamed(context, '/register');
-              },
-            ),
-          
-          //Logout option with hover effct and touch effect
-          _buildMenuOption(index: 2,
-           icon: Icons.logout, 
-           title: "Logout",
-            onTap: logout
+             Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(8, (index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Card(
+                            child: SizedBox(
+                              width: 170,
+                              height: 120,
+                              child:
+                                  Center(child: Text("Card ${index * 2 + 1}")),
+                            ),
+                          ),
+                          const SizedBox(width: 25), // Space between the cards
+                          Card(
+                            child: SizedBox(
+                              width: 170,
+                              height: 120,
+                              child:
+                                  Center(child: Text("Card ${index * 2 + 2}")),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+                ),
+              ),
             ),
           ],
         ),
+
+        // Center(
+        //   child: SingleChildScrollView(
+        //     child: Column(
+        //       mainAxisAlignment: MainAxisAlignment.center,
+        //       children: List.generate(8, (index) {
+        //         return Padding(
+        //           padding: const EdgeInsets.symmetric(vertical: 8.0),
+        //           child: Row(
+        //             mainAxisAlignment: MainAxisAlignment.center,
+        //             children: [
+        //               Card(
+        //                 child: SizedBox(
+        //                   width: 170,
+        //                   height: 120,
+        //                   child: Center(child: Text("Card ${index * 2 + 1}")),
+        //                 ),
+        //               ),
+        //               const SizedBox(width: 25), // Space between the cards
+        //               Card(
+        //                 child: SizedBox(
+        //                   width: 170,
+        //                   height: 120,
+        //                   child: Center(child: Text("Card ${index * 2 + 2}")),
+        //                 ),
+        //               ),
+        //             ],
+        //           ),
+        //         );
+        //       }),
+        //     ),
+        //   ),
+        // ),
       ),
-      body: Center(
-          child: userName != null && token != null
-              ? Text('Welcome, $userName')
-              : const Text("Welcome To Homepage")),
     );
   }
 
@@ -146,7 +250,7 @@ class HomePageState extends State<HomePage> {
           });
         },
         child: Container(
-          color: _touchedIndex == index ?  Colors.blue : null, 
+          color: _touchedIndex == index ? Colors.blue : null,
           child: ListTile(
             leading: Icon(icon),
             title: Text(title),
@@ -156,7 +260,3 @@ class HomePageState extends State<HomePage> {
     );
   }
 }
-
-
-
-
