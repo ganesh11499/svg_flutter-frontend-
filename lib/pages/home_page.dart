@@ -101,10 +101,10 @@ class HomePageState extends State<HomePage> {
               //Setting option with hover effect and touch effect
               _buildMenuOption(
                 index: 1,
-                icon: Icons.settings,
-                title: "Settings",
+                icon: Icons.store,
+                title: "Products",
                 onTap: () {
-                  Navigator.pushNamed(context, '/register');
+                  Navigator.pushNamed(context, '/productList');
                 },
               ),
 

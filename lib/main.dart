@@ -1,6 +1,8 @@
 // import 'package:app/pages/login_page.dart';
+import 'package:app/pages/add_product_page.dart';
 import 'package:app/pages/home_page.dart';
 import 'package:app/pages/login_page.dart';
+import 'package:app/pages/product_list_page.dart';
 import 'package:app/pages/register_page.dart';
 import 'package:app/pages/shop_register_form.dart';
 import 'package:flutter/material.dart';
@@ -62,6 +64,12 @@ class MyApp extends StatelessWidget {
           case '/shopRegisterForm':
             return MaterialPageRoute(
                 builder: (context) => const ShopRegisterForm());
+          case "/productList":
+            return MaterialPageRoute(
+              builder: (context) => const ProductList());  
+          case "/addProduct":
+            return MaterialPageRoute(
+              builder: (context) => const AddProduct());        
           default:
             return MaterialPageRoute(builder: (context) => const  LoginPage());
         }
